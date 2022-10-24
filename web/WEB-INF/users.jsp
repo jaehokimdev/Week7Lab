@@ -24,18 +24,16 @@
                 <th></th>
                 <th></th>
             </tr>
-            <tr>
-                <c:forEach items="users" var="user">
-                <th>${user.email}</th>
-                <th>${user.firstName}</th>
-                <th>${user.lastName}</th>
-                <th>${user.password}</th>
-                <th>${user.role}</th>
-                <th></th>
-                <th></th>
-                </c:forEach>
-            </tr>
-            
+            <c:forEach items="${users}" var="user">
+                <tr>
+                    <td>${user.email}</td>
+                    <td>${user.firstName}</td>
+                    <td>${user.lastName}</td>
+                    <td>${user.role.role_name}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </c:forEach>
         </table>
     </body>
 </html>

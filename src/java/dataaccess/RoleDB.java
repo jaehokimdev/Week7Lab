@@ -28,7 +28,7 @@ public class RoleDB {
             ps.setInt(1, role_id);
             rs = ps.executeQuery();
             if (rs.next()) {
-                String role_name = rs.getNString(2);
+                String role_name = rs.getString(2);
                 role = new Role(role_id, role_name);
             }
         } finally {

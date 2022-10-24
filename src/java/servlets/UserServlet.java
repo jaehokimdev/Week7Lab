@@ -39,6 +39,8 @@ public class UserServlet extends HttpServlet {
             request.setAttribute("message", "error");
         }
        
+       
+       
        getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
 
     }

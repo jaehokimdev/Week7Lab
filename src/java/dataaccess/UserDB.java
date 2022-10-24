@@ -33,12 +33,15 @@ public class UserDB {
         try {
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
+            RoleService RoleS = new RoleService();
+            
             while (rs.next()) {                
                 String email = rs.getString(1);
                 String firstName = rs.getString(2);
                 String lastName = rs.getString(3);
                 String password = rs.getString(4);
-                Role role = RoleService.get(rs.getInt(5));
+                Role role = RoleS.get(rs.getInt(5));
+
                 
                 User user = new User(email, firstName, lastName, password, role);
                 users.add(user);
