@@ -7,6 +7,7 @@ package services;
 
 import dataaccess.UserDB;
 import java.util.List;
+import models.Role;
 import models.User;
 
 /**
@@ -18,5 +19,11 @@ public class UserService {
         UserDB userDB = new UserDB();
         List<User> users = userDB.getAll();
         return users;
+    }
+    
+    public void add(String email, String firstName, String lastName, String password, Role role) throws Exception {
+        User user = new User(email, firstName, lastName, password, role);
+        UserDB userDB = new UserDB();
+        userDB.add(user);
     }
 }

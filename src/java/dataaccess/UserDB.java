@@ -13,6 +13,7 @@ import java.util.List;
 import models.Role;
 import models.User;
 import dataaccess.RoleDB;
+import java.sql.SQLException;
 import services.RoleService;
 
 /**
@@ -53,5 +54,26 @@ public class UserDB {
         }
         
         return users;
+    }
+
+    public void add(User user) throws Exception {
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection con = cp.getConnection();
+        PreparedStatement ps = null;
+        String sql = "INSERT INTO user (email, first_name, last_name, password, role) VALUES (?, ?, ?, ?, ?)";
+        
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1, user.getEmail());
+            ps.setString(2, user.getFirstName());
+            ps.setString(3, user.getLastName());
+            ps.setString(4, user.getPassword());
+            ps.setInt(5, user.getRole().getRole_id());
+            ps.executeUpdate();
+        } finally {
+            DBUtil.closePreparedStatement(ps);
+            cp.freeConnection(con);
+        }
+        
     }
 }
