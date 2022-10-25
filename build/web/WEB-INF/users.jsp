@@ -30,8 +30,8 @@
                     <td>${user.firstName}</td>
                     <td>${user.lastName}</td>
                     <td>${user.role.role_name}</td>
-                    <td></td>
-                    <td></td>
+                    <td><a href="<c:url value='/users?email=${user.email}&amp;action=edit' />">Edit</a></td>
+                    <td><a href="users?email=${user.email}&action=delete">Delete</a></td>
                 </tr>
             </c:forEach>
         </table>

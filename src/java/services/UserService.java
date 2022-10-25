@@ -21,6 +21,12 @@ public class UserService {
         return users;
     }
     
+    public User get(String email) throws Exception {
+        UserDB userDB = new UserDB();
+        User user = userDB.get(email);
+        return user;
+    }
+    
     public void add(String email, String firstName, String lastName, String password, Role role) throws Exception {
         User user = new User(email, firstName, lastName, password, role);
         UserDB userDB = new UserDB();
