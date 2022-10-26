@@ -99,15 +99,26 @@ public class UserServlet extends HttpServlet {
         try {
             switch (action) {
                 case "create":
+                    if (email.isEmpty() || firstname.isEmpty() || lastname.isEmpty() || password.isEmpty()) {
+                        request.setAttribute("error", "All fields are required");
+                        break;
+                    }
                     us.add(email, firstname, lastname, password, role);
                     break;
                 case "update":
+                    if (firstname.isEmpty() || lastname.isEmpty() || password.isEmpty()) {
+                        request.setAttribute("error", "All fields are required");
+                        User user = us.get(email);
+                        request.setAttribute("selectedUser", user);
+                        break;
+                    }
                     HttpSession session = request.getSession();
                     String selEmail = (String) session.getAttribute("selEmail");
                     us.update(selEmail, firstname, lastname, password, role);
                     break;
-                case "delete":
-                    us.add(email, firstname, lastname, password, role);
+                case "cancel":
+                    request.setAttribute("selectedUser", null);
+                    break;
             }
             request.setAttribute("message", action);
         } catch (Exception ex) {

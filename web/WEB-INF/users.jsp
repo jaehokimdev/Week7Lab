@@ -15,26 +15,31 @@
     </head>
     <body>
         <h1>Manage Users</h1>
-        <table border="1">
-            <tr>
-                <th>Email</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Role</th>
-                <th></th>
-                <th></th>
-            </tr>
-            <c:forEach items="${users}" var="user">
-                <tr>
-                    <td>${user.email}</td>
-                    <td>${user.firstName}</td>
-                    <td>${user.lastName}</td>
-                    <td>${user.role.role_name}</td>
-                    <td><a href="<c:url value="user"><c:param name="action" value="edit" /><c:param name="email" value="${user.email}" /></c:url>">Edit</a></td>
-                    <td><a href="<c:url value="user"><c:param name="action" value="delete" /><c:param name="email" value="${user.email}" /></c:url>">Delete</a></td>
-                </tr>
-            </c:forEach>
-        </table>
+            <c:if test="${users.size() eq 0}">
+                <h3>No users found. Please add a user.</h3>
+            </c:if>
+            <c:if test="${users.size() ne 0}">  
+                <table border="1">
+                    <tr>
+                      <th>Email</th>
+                       <th>First Name</th>
+                      <th>Last Name</th>
+                       <th>Role</th>
+                       <th></th>
+                       <th></th>
+                    </tr>
+                    <c:forEach items="${users}" var="user">
+                        <tr>
+                            <td>${user.email}</td>
+                            <td>${user.firstName}</td>
+                            <td>${user.lastName}</td>
+                            <td>${user.role.role_name}</td>
+                            <td><a href="<c:url value="user"><c:param name="action" value="edit" /><c:param name="email" value="${user.email}" /></c:url>">Edit</a></td>
+                            <td><a href="<c:url value="user"><c:param name="action" value="delete" /><c:param name="email" value="${user.email}" /></c:url>">Delete</a></td>
+                        </tr>
+                    </c:forEach>
+                </table>
+            </c:if>
         <c:if test="${selectedUser eq null}">
             <h2>Add User</h2><br>
             <form action="users" method="post">
@@ -49,6 +54,7 @@
                 <input type="hidden" name="action" value="create">
                 <input type="submit" value="Add user">
             </form>
+            ${error}
         </c:if>
         <c:if test="${selectedUser ne null}">
             <h2>Edit User</h2><br>
@@ -65,9 +71,10 @@
                 <input type="submit" value="Update">
             </form>
             <form action="users" method="post">
-                <input type="hidden" name="action" vlaue="cancel">
-                <input type="button" value="Cancel">
+                <input type="hidden" name="action" value="cancel">
+                <input type="submit" value="Cancel">
             </form>
+            ${error}
         </c:if>
     </body>
 </html>
