@@ -30,8 +30,8 @@
                     <td>${user.firstName}</td>
                     <td>${user.lastName}</td>
                     <td>${user.role.role_name}</td>
-                    <td><a href="<c:url value='/users?email=${user.email}&amp;action=edit' />">Edit</a></td>
-                    <td><a href="users?email=${user.email}&action=delete">Delete</a></td>
+                    <td><a href="<c:url value="user"><c:param name="action" value="edit" /><c:param name="email" value="${user.email}" /></c:url>">Edit</a></td>
+                    <td><a href="<c:url value="user"><c:param name="action" value="delete" /><c:param name="email" value="${user.email}" /></c:url>">Delete</a></td>
                 </tr>
             </c:forEach>
         </table>
@@ -57,15 +57,17 @@
                 First name: <input type="text" name="firstname" value="${selectedUser.firstName}"><br>
                 Last name: <input type="text" name="lastname" value="${selectedUser.lastName}"><br>
                 Password: <input type="password" name="password" value=""><br>
-                Role: <select name="role" value="${selectedUser.role.role_name}">
-                    <option value="system admin">system admin</option>
-                    <option value="regular user">regular user</option>
+                Role: <select name="role" value="role">
+                    <option value="1" <c:if test="${selectedUser.role.role_id eq 1}">selected</c:if> >system admin</option>
+                    <option value="2" <c:if test="${selectedUser.role.role_id eq 2}">selected</c:if> >regular user</option>
                 </select><br>
-                <input type="hidden" name="action" value="edit">
-                <input type="submit" value="update">
+                <input type="hidden" name="action" value="update">
+                <input type="submit" value="Update">
             </form>
+            <form action="users" method="post">
                 <input type="hidden" name="action" vlaue="cancel">
                 <input type="button" value="Cancel">
+            </form>
         </c:if>
     </body>
 </html>

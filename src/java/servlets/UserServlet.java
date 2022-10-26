@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import models.Role;
 import models.User;
 import services.RoleService;
@@ -43,13 +44,32 @@ public class UserServlet extends HttpServlet {
        
        if (action != null && action.equals("edit")) {
            try {
+               HttpSession session = request.getSession();
                String email = request.getParameter("email");
+               session.setAttribute("selEmail", email);
                User user = us.get(email);
                request.setAttribute("selectedUser", user);
            } catch (Exception ex) {
                Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
            }
        }
+       
+       if (action != null && action.equals("delete")) {
+           try {
+               String email = request.getParameter("email");
+               us.delete(email);
+           } catch (Exception ex) {
+               Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+           }
+       }
+       
+       try {
+            List<User> users = us.getAll();
+            request.setAttribute("users", users);
+        } catch (Exception ex) {
+            Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("message", "error");
+        }
         
        getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
 
@@ -71,7 +91,7 @@ public class UserServlet extends HttpServlet {
         
         Role role = new Role();
         try {
-            role = rs.get(Integer.parseInt(request.getParameter("role")));
+            role = rs.get(Integer.parseInt(selectedrole));
         } catch (Exception ex) {
             Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -81,8 +101,10 @@ public class UserServlet extends HttpServlet {
                 case "create":
                     us.add(email, firstname, lastname, password, role);
                     break;
-                case "edit":
-                    us.add(email, firstname, lastname, password, role);
+                case "update":
+                    HttpSession session = request.getSession();
+                    String selEmail = (String) session.getAttribute("selEmail");
+                    us.update(selEmail, firstname, lastname, password, role);
                     break;
                 case "delete":
                     us.add(email, firstname, lastname, password, role);
@@ -103,10 +125,6 @@ public class UserServlet extends HttpServlet {
         
         getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
 
-    }
-
-    private String encodeURI(String parameter) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
