@@ -106,14 +106,14 @@ public class UserServlet extends HttpServlet {
                     us.add(email, firstname, lastname, password, role);
                     break;
                 case "update":
+                    HttpSession session = request.getSession();
+                    String selEmail = (String) session.getAttribute("selEmail");
                     if (firstname.isEmpty() || lastname.isEmpty() || password.isEmpty()) {
                         request.setAttribute("error", "All fields are required");
-                        User user = us.get(email);
+                        User user = us.get(selEmail);
                         request.setAttribute("selectedUser", user);
                         break;
                     }
-                    HttpSession session = request.getSession();
-                    String selEmail = (String) session.getAttribute("selEmail");
                     us.update(selEmail, firstname, lastname, password, role);
                     break;
                 case "cancel":
